@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Eliminar curso{% endblock %}
+{% block content %}
+    <div class="ui two column centered grid">
+        <div class="column">
+             <h1>Eliminar curso</h1>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="ui placeholder segment">
+                    <div class="ui icon header">
+                        <i class="desktop icon"></i>
+                        <p>Deseas realmente eliminar el curso de <span class="ui large orange label">{{ object }}</span>?</p>
+                    </div>
+                    <div class="inline">
+                        <a href="{% url "manage_curso_list" %}" class="ui grey button">Cancelar</a>
+                        <input class="ui red button" type="submit" value="Confirmar">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

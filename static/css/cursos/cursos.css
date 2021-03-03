@@ -1,0 +1,5 @@
+.attached.ui.segment.ui-sortable-handle:active {
+    background-color: lightgrey;
+    color: #FAFAFA;
+    cursor: crosshair;
+}

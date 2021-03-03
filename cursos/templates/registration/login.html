@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Log-in{% endblock %}
+
+ {% block header %}
+        <div class="ui inverted  menu">
+
+        </div>
+    {% endblock %}
+
+{% block content %}
+     <style type="text/css">
+    body {
+      background-color: #fffaf3;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+    .content {
+        margin-top: 150px;
+    }
+  </style>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui black image header">
+                <!-- <img src="assets/images/logo.png" class="image"> -->
+                <div class="content">
+                    Iniciar sesion
+                </div>
+            </h2>
+            <form class="ui large form" action="{% url 'login' %}" method="post">
+                <div class="ui stacked segment">
+                    <div class="ui error message">
+                        {% if form.errors %}
+                            <p>Your username and password didn't match. Please try again.</p>
+                        {% else %}
+                            <p>Please, use the following form to log-in:</p>
+                        {% endif %}
+                    </div>
+
+                    {% for field in form %}
+
+                        <div class="field">
+                            <div class="ui left icon input">
+                                {% if field.label == "Password" %}
+                                    <i class="lock icon"></i>
+                                {% else %}
+                                    <i class="user icon"></i>
+                                {% endif %}
+                             {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}"/>
+                    <p><input class="ui fluid large black submit button"
+                              type="submit" value="Entrar">
+                    </p>
+                </div>
+            </form>
+
+            <div class="ui message">
+                No tienes cuenta? <a href="#">Registrate</a>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,34 @@
+[
+{
+  "model": "cursos.tema",
+  "pk": 1,
+  "fields": {
+    "titulo": "seguridad industrial",
+    "slug": "seguridad-industrial"
+  }
+},
+{
+  "model": "cursos.tema",
+  "pk": 2,
+  "fields": {
+    "titulo": "primeros auxilios",
+    "slug": "primeros-auxilios"
+  }
+},
+{
+  "model": "cursos.tema",
+  "pk": 3,
+  "fields": {
+    "titulo": "manipulacion de equipo industrial",
+    "slug": "manipulacion-de-equipo-industrial"
+  }
+},
+{
+  "model": "cursos.tema",
+  "pk": 4,
+  "fields": {
+    "titulo": "primeros auxilios avanzado",
+    "slug": "primeros-auxilios-avanzado"
+  }
+}
+]

@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}Educa{% endblock %}</title>
+    <link href="{% static "css/semantic-css/semantic.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+    {% block extraCss %}{% endblock %}
+</head>
+<body>
+<div id="header">
+    {% block header %}
+        <div class="ui black menu">
+            <div class="ui black label large  item">SICASI</div>
+            <a class="active item" href="{% url 'manage_curso_list' %}">
+                Home
+            </a>
+            <a class="item">
+                Messages
+            </a>
+            <a class="item">
+                Friends
+            </a>
+            <div class="right menu">
+              <!--  <div class="item">
+                    <div class="ui icon input">
+                        <input type="text" placeholder="Search...">
+                        <i class="search link icon"></i>
+                    </div>
+                </div> -->
+                <div class="ui item">
+                    {% if request.user.is_authenticated %}
+                        <div class="ui labeled button" tabindex="0">
+                          <div class="ui basic black button">
+                            <i class="user icon"></i> {{ request.user }}
+                          </div>
+                          <a href="{% url "logout" %}" class="ui black label">
+                            Salir
+                          </a>
+                        </div>
+                    {% else %}
+                        <a class="ui green button" href="{% url "login" %}">Entrar</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <p style="margin-bottom: 60px;"></p>
+    {% endblock %}
+</div>
+
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="{% static "css/semantic-css/semantic.min.js" %}"></script>
+<script>
+    $(document).ready(function () {
+        {% block domready %}
+        {% endblock %}
+    });
+</script>
+</body>
+</html>

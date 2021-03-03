@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if subject %}
+        {{ subject.titulo }} Cursos
+    {% else %}
+        Todos los cursos
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="ui container">
+        <h2 class="ui center aligned header">
+            <img class="ui image" src="{% static "img/school.png" %}/">
+            <div class="content">{% if subject %} {{ subject.titulo }} Curso {% else %} Todos los
+                cursos{% endif %}</div>
+        </h2>
+
+        <div class="ui hidden divider"></div>
+
+        <div class="ui grid">
+            <div class="four wide column">
+                <div class="top attached ui grey inverted segment">Temas</div>
+                <div id="modules">
+                    <div class="ui attached segment {% if not subject %}selected{% endif %}">
+                        <a href="{% url "course_list" %}">Todos</a>
+                    </div>
+                    {% for s in subjects %}
+                        <div class="ui attached segment">
+                            <a href="{% url "course_list_subject" s.slug %}">{{ s.titulo }}<br><span>{{ s.total_cursos }} Cursos</span></a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="twelve wide column">
+                <div class="module">
+                    {% for course in courses %}
+                        {% with subject=course.subject %}
+                            <h3>
+                                <a href="{% url "course_detail" course.slug %}">
+                                    {{ course.nombre }}
+                                </a>
+                            </h3>
+                            <p>
+                                <a href="">{{ subject }}</a>
+                                {{ course.total_modules }} modulos.
+                                Instructor: {% if  course.propietario.get_full_name %}
+                                {{ course.propietario.get_full_name }} {% else %} {{ course.propietario }} {% endif %}
+                            </p>
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

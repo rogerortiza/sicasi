@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  {{ object.title }}
+{% endblock %}
+
+{% block content %}
+      <div class="ui container">
+          {% with subject=object.tema %}
+              <h2 class="ui center aligned header">
+                  <img class="ui image" src="{% static "img/school.png" %}/">
+                  <div class="content">Curso: {{ curso.nombre }}</div>
+              </h2>
+
+              <div class="ui center aligned basic container">
+                  Tema: <a href="{% url "course_list_subject" subject.slug %}">{{ subject.titulo }}</a>. <br>
+                  No. modulos: {{ object.modulos.count }} .
+                  <div class="sub header">Instructor: {{ object.propietario.get_full_name }}.</div>
+              </div>
+
+              <div class="ui piled segment">
+                  <h3 class="ui header">Descripcion general</h3>
+                  {{ object.descripcion|safe }}
+              </div>
+      </div>
+  {% endwith %}
+{% endblock %}

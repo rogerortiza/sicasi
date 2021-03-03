@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Mis Cursos{% endblock %}
+{% block content %}
+    <div class="ui two column centered grid">
+        <div class="column">
+            <h1>Mis Cursos</h1>
+            {% for curso in object_list %}
+                <div class="ui large middle aligned divided list">
+                    <div class="item">
+                        <div class="right floated content">
+                            <a class="ui green tiny button" href="{% url "curso_edit" curso.id %}">Editar</a>
+                            <a class="ui blue tiny button" href="{% url "curso_modulo_update" curso.id %}">Modulos</a>
+                            {% if curso.modulos.count > 0 %}
+                                <a class="ui blue tiny button" href="{% url "modulo_contenido_list" curso.modulos.first.id %}">Administrar contenidos</a>
+                            {% endif %}
+                        </div>
+                        <!-- <img class="ui avatar image" src="/images/avatar2/small/lena.png"> -->
+                        <div class="content">
+                            <a class="header"> {{ curso.nombre }}</a>
+                            <div class="description">Curso: {{ curso.tema }} </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="ui placeholder segment">
+                    <div class="ui icon header">
+                        <i class="desktop icon"></i>
+                        No has creado ningun curso aun.
+                    </div>
+                </div>
+            {% endfor %}
+            <p>
+                <a href="{% url "curso_create" %}" class="ui green button">Crear nuevo curso</a>
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

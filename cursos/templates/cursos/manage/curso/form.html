@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}
+    {% if object %}
+        Editar curso "{{ object.nombre }}"
+    {% else %}
+        Crear nuevo curso
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="ui two column centered grid">
+        <div class="column">
+            <h1>
+                {% if object %}
+                    Editar curso "{{ object.nombre }}"
+                {% else %}
+                    Crear Nuevo Curso
+                {% endif %}
+            </h1>
+            <div class="module">
+                <h2>Informacion del curso</h2>
+                <form class="ui form" method="post">
+                    {{ form.media }}
+                    {% for field in form %}
+                        <div class="field">
+                            <label> {{ field.label_tag }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                    {% csrf_token %}
+                    <div class="ui grid">
+                        <div class="two column row">
+                            <div class="left floated  column">
+                                <a href="{% url "manage_curso_list" %}" class="ui grey button">Cancelar</a>
+                                <input class="ui green submit button" type="submit" value="Guardar">
+                            </div>
+                            <div class="right floated right aligned column">
+                                {% if object %}
+                                    <a class="ui negative button" href="{% url "curso_delete" object.id %}">Eliminar</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

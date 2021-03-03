@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+{% load curso %}
+
+{% block title %}
+    Modulo {{ modulo.order|add:1 }}: {{ modulo.titulo }}
+{% endblock %}
+
+{% block extraCss %}
+    <link href="{% static "css/cursos/cursos.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% with curso=modulo.curso %}
+        <div class="ui container">
+            <h2 class="ui center aligned header">
+                <img class="ui image" src="{% static "img/school.png" %}/">
+                <div class="content">
+                    Curso: {{ curso.nombre }}
+                </div>
+            </h2>
+
+        <div class="ui hidden divider"></div>
+
+            <div class="ui grid">
+                <div class="four wide column">
+                    <div class="top attached ui grey inverted segment">Modulos</div>
+                    <div id="modules">
+                        {% for m in curso.modulos.all %}
+                            <div data-id="{{ m.id }}" class="attached ui segment">
+                                <div class="content">
+                                    <div class="ui ribbon label">Modulo <span class="order">{{ m.orden|add:1 }}</div>
+                                    <div class="description"><a href="{% url "modulo_contenido_list" m.id %}">{{ m.titulo }}</a></div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <span>No hay modulos aun.</span>
+                        {% endfor %}
+                        <div class="bottom attached ui segment">
+                            <a class="ui positive button" href="{% url "curso_modulo_update" curso.id %}">Editar modulos</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="twelve wide column">
+                    <h2>{{ modulo.titulo }}</h2>
+                    <h3>Contenidos:</h3>
+                    <div id="module-contents" class="ui middle aligned divided list">
+
+                        {% for content in modulo.contenidos.all %}
+                            <div data-id="{{ content.id }}" class="item">
+                                {% with item=content.item %}
+                                    <div class="right floated content">
+                                        <div class="ui tiny buttons">
+                                            <a href="{% url "modulo_contenido_update" modulo.id item|model_name item.id %}" class="ui positive button">Editar</a>
+                                            <div class="or"></div>
+                                            <form action="{% url "modulo_contenido_delete" content.id %}"
+                                                  method="post">
+                                                <input class="ui negative button" type="submit" value="Eliminar">
+                                                {% csrf_token %}
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                      <i class="th list icon"></i>
+                                        {{ item }} ({{ item|model_name }})
+                                    </div>
+                                {% endwith %}
+
+                            </div>
+
+                        {% empty %}
+                            <div class="ui placeholder segment">
+                                <div class="ui icon header">
+                                    <i class="video icon"></i>
+                                    Este modulo no tiene contenido aun.
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="ui hidden divider"></div>
+
+                    <h3>Agregar nuevo contenido:</h3>
+                    <div class="">
+                        <span><a class="ui violet button" href="{% url "modulo_contenido_create" modulo.id "texto" %}">Texto</a></span>
+                        <span><a class="ui violet button" href="{% url "modulo_contenido_create" modulo.id "imagen" %}">Imagen</a></span>
+                        <span><a class="ui violet button" href="{% url "modulo_contenido_create" modulo.id "video" %}">Video</a></span>
+                        <span><a class="ui violet button" href="{% url "modulo_contenido_create" modulo.id "archivo" %}">Archivo</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    {% endwith %}
+{% endblock %}
+
+{% block domready %}
+    $('#modules').sortable({
+    stop: function(event, ui) {
+    modules_order = {};
+    $('#modules').children().each(function(){
+    // update the order field
+    $(this).find('.order').text($(this).index() + 1);
+    // associate the module's id with its order
+    modules_order[$(this).data('id')] = $(this).index();
+    });
+    $.ajax({
+    type: 'POST',
+    url: '{% url "module_order" %}',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    data: JSON.stringify(modules_order)
+    });
+    }
+    });
+
+    $('#module-contents').sortable({
+    stop: function(event, ui) {
+    contents_order = {};
+    $('#module-contents').children().each(function(){
+    // associate the module's id with its order
+    contents_order[$(this).data('id')] = $(this).index();
+    });
+
+    $.ajax({
+    type: 'POST',
+    url: '{% url "content_order" %}',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    data: JSON.stringify(contents_order),
+    });
+    }
+    });
+
+{% endblock %}

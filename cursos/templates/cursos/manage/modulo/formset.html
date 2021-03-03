@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}
+    Editar "{{ curso.nombre }}"
+{% endblock %}
+{% block content %}
+    <style>
+
+    </style>
+    <div class="ui two column centered grid">
+        <div class="column">
+            <h1>Editar "{{ curso.nombre }}"</h1>
+            <h2>Modulos del curso</h2>
+            <form class="ui form" method="post">
+                {{ formset.media }}
+                {% for form in formset %}
+                    {% for hidden_field in form.hidden_fields %}
+                        {{ hidden_field }}
+                    {% endfor %}
+                    {% for field in form.visible_fields %}
+                        <div class="field">
+                            <label>{{ field.label_tag }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {{ formset.management_form }}
+                {% csrf_token %}
+                <a class="ui grey button" href="{% url "manage_curso_list" %}">Cancelar</a>
+                <input class="ui green submit button" type="submit" value="Guardar modulos">
+            </form>
+        </div>
+    </div>
+{% endblock %}
